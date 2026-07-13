@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pitch | Modern Football Experience</title>
+    <!-- Typography: Montserrat (Headings) & Open Sans (Body) as per 2025 Palette Guidelines -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM VARIABLES (Based on DecodeLabs Project 1 Guidelines)
+           ========================================================================== */
+        :root {
+            /* Palette Constraints */
+            --mocha-mousse: #A5956E;   /* Stability / Accent */
+            --ethereal-blue: #A0D4E0;  /* Trust / Highlights */
+            --moonlit-grey: #F2F0EA;   /* Refinement / Base Light Background */
+            --dark-ground: #2B2925;    /* Grounded base dark tone */
+            --card-bg: #FFFFFF;
+            
+            /* Typography Scale with Fluid Clamp Formula */
+            --font-headings: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            
+            --h1-fluid: clamp(2rem, 5vw, 3.5rem);
+            --h2-fluid: clamp(1.5rem, 3vw, 2.2rem);
+            --body-size: clamp(0.95rem, 1vw + 0.5rem, 1.1rem);
+            
+            /* Transitions & System Spacing */
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --border-radius-lg: 12px;
+            --border-radius-sm: 6px;
+            --site-max-width: 1200px;
+        }
+
+        /* ==========================================================================
+           2. BASE RESET & ACCESSIBILITY
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            line-height: 1.6;
+            background-color: var(--moonlit-grey);
+            color: var(--dark-ground);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .nav-logo {
+            font-family: var(--font-headings);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, .cta-button {
+            font-family: var(--font-headings);
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        /* Focus styles for strict WCAG access compliance */
+        *:focus-visible {
+            outline: 3px solid var(--ethereal-blue);
+            outline-offset: 2px;
+        }
+
+        /* ==========================================================================
+           3. MOBILE-FIRST ARCHITECTURE (Layout & Landmarks)
+           ========================================================================== */
+        
+        /* Master Layout Container using standard 2D Grid Approach */
+        .app-container {
+            display: grid;
+            grid-template-areas: 
+                "header"
+                "hero"
+                "main"
+                "sidebar"
+                "footer";
+            grid-template-columns: 1fr;
+            min-height: 100vh;
+        }
+
+        /* Landmark: Header & Navigation (Micro components via Flexbox) */
+        .site-header {
+            grid-area: header;
+            background-color: var(--dark-ground);
+            color: #FFFFFF;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            max-width: var(--site-max-width);
+            margin: 0 auto;
+            height: 70px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            color: var(--ethereal-blue);
+        }
+
+        .nav-logo span {
+            color: var(--mocha-mousse);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition-smooth);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--mocha-mousse);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--ethereal-blue);
+        }
+
+        /* Landmark: Hero Section */
+        .hero-section {
+            grid-area: hero;
+            background: linear-gradient(135deg, var(--dark-ground) 0%, #1c1b18 100%);
+            color: #FFFFFF;
+            padding: 4rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 6px solid var(--mocha-mousse);
+        }
+
+        .hero-title {
+            font-size: var(--h1-fluid);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            color: var(--mocha-mousse);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            color: var(--moonlit-grey);
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background-color: var(--mocha-mousse);
+            color: #FFFFFF;
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            border-radius: var(--border-radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .cta-button:hover {
+            background-color: var(--ethereal-blue);
+            color: var(--dark-ground);
+            transform: translateY(-2px);
+        }
+
+        /* Landmark: Main Narrative Content Grid */
+        .main-content {
+            grid-area: main;
+            padding: 2.5rem 1.5rem;
+            max-width: var(--site-max-width);
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: var(--h2-fluid);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--mocha-mousse);
+        }
+
+        /* Macro layout of football news block */
+        .football-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        /* Article Units inside Grid */
+        .news-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(165, 149, 110, 0.15);
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        .card-visual-placeholder {
+            height: 200px;
+            background-color: var(--mocha-mousse);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-family: var(--font-headings);
+            position: relative;
+        }
+
+        /* Injecting aesthetic geometric grid pattern representation inside elements */
+        .card-visual-placeholder::before {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border: 1px dashed rgba(255,255,255,0.4);
+        }
+
+        .news-card:nth-child(2) .card-visual-placeholder {
+            background-color: var(--dark-ground);
+            color: var(--ethereal-blue);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-family: var(--font-headings);
+            font-size: 0.75rem;
+            font-weight: 700;
+            background-color: var(--moonlit-grey);
+            color: var(--mocha-mousse);
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--border-radius-sm);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-excerpt {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Landmark: Side Interaction Panel */
+        .side-panel {
+            grid-area: sidebar;
+            background-color: #EBE8E0;
+            padding: 2.5rem 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .widget {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--dark-ground);
+            border-left: 4px solid var(--ethereal-blue);
+            padding-left: 0.5rem;
+        }
+
+        /* Native Live Counter Interaction Component styling */
+        .poll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .poll-option {
+            background: var(--moonlit-grey);
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        .poll-option:hover {
+            background-color: var(--ethereal-blue);
+            color: var(--dark-ground);
+        }
+
+        .poll-count {
+            background: var(--dark-ground);
+            color: #FFF;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.8rem;
+            border-radius: 10px;
+        }
+
+        /* Landmark: Terminal Metadata Footer */
+        .site-footer {
+            grid-area: footer;
+            background-color: var(--dark-ground);
+            color: #FFFFFF;
+            padding: 3rem 1.5rem 1.5rem;
+            border-top: 4px solid var(--ethereal-blue);
+        }
+
+        .footer-content {
+            max-width: var(--site-max-width);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-branding h3 {
+            color: var(--ethereal-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-meta {
+            font-size: 0.85rem;
+            color: #A09E9A;
+            border-top: 1px solid #3E3C38;
+            padding-top: 1.5rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           4. ADAPTABILITY ENGINE (Strict Media Queries for Larger Screen Architecture)
+           ========================================================================== */
+        
+        /* Tablet Breakpoint Optimization (768px+) */
+        @media screen and (min-width: 768px) {
+            .football-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-section {
+                padding: 6rem 3rem;
+            }
+        }
+
+        /* Desktop Grid Paradigm Shift (1024px+) */
+        @media screen and (min-width: 1024px) {
+            .app-container {
+                grid-template-areas: 
+                    "header header"
+                    "hero hero"
+                    "main sidebar"
+                    "footer footer";
+                grid-template-columns: 3fr 1fr;
+            }
+
+            .main-content {
+                padding: 4rem 2rem;
+            }
+
+            .side-panel {
+                border-top: none;
+                border-left: 1px solid rgba(0,0,0,0.05);
+                padding: 4rem 2rem;
+            }
+
+            .football-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- HEADER LANDMARK -->
+        <header class="site-header">
+            <nav class="nav-container" aria-label="Primary Navigation">
+                <div class="nav-logo">THE<span>PITCH</span></div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#news" class="nav-link">News</a></li>
+                    <li><a href="#stats" class="nav-link">Stats</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="hero-section" id="home">
+            <h1 class="hero-title">Tactics. <span>Artistry.</span> Glory.</h1>
+            <p class="hero-subtitle">Step deep into the tactical analysis, cultural narratives, and beautiful moments shaping modern football globally.</p>
+            <button class="cta-button" id="exploreBtn" type="button">Explore Chronicles</button>
+        </section>
+
+        <!-- MAIN NARRATIVE CONTENT -->
+        <main class="main-content" id="news">
+            <h2 class="section-title">Latest Coordinates</h2>
+            
+            <div class="football-grid">
+                
+                <!-- Article unit 1 -->
+                <article class="news-card">
+                    <div class="card-visual-placeholder" aria-hidden="true">TACTICAL FRAMEWORK</div>
+                    <div class="card-body">
+                        <span class="card-tag">Analysis</span>
+                        <h3 class="card-title">The Death of the Fixed Winger</h3>
+                        <p class="card-excerpt">How modern inverted spatial dynamics and fluid micro-networks completely redefined role-based football execution inside the final third.</p>
+                        <button class="cta-button" style="padding: 0.5rem 1.2rem; font-size: 0.8rem;" type="button">Read Matrix</button>
+                    </div>
+                </article>
+
+                <!-- Article unit 2 -->
+                <article class="news-card">
+                    <div class="card-visual-placeholder" aria-hidden="true">CULTURE COMPASS</div>
+                    <div class="card-body">
+                        <span class="card-tag">Culture</span>
+                        <h3 class="card-title">Grounded Icons of the Terrace</h3>
+                        <p class="card-excerpt">Exploring the profound architectural shifts from sterile tech arenas back to historical neighborhood identity hubs within regional clubs.</p>
+                        <button class="cta-button" style="padding: 0.5rem 1.2rem; font-size: 0.8rem;" type="button">Read Matrix</button>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+
+        <!-- SIDEBAR INTERACTIVE PANEL -->
+        <aside class="side-panel" aria-label="Interactive Sidebar">
+            <div class="widget">
+                <h3 class="widget-title">Live Supporter Poll</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem; color: #666;">Which strategic architecture dominates today?</p>
+                
+                <!-- Interactive Pure JS Component Elements -->
+                <div class="poll-container">
+                    <button class="poll-option" data-option="possession" type="button">
+                        <span>Fluid Possession</span>
+                        <span class="poll-count" id="count-possession">142</span>
+                    </button>
+                    <button class="poll-option" data-option="press" type="button">
+                        <span>Gegenpressing</span>
+                        <span class="poll-count" id="count-press">98</span>
+                    </button>
+                    <button class="poll-option" data-option="lowblock" type="button">
+                        <span>Low-Block Counter</span>
+                        <span class="poll-count" id="count-lowblock">45</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title">System Alert</h3>
+                <p style="font-size: 0.9rem; color: var(--dark-ground)">The layout engine is operating at optimal parameters. Resize window to witness structural responsiveness fluidly adaptive to your context.</p>
+            </div>
+        </aside>
+
+        <!-- FOOTER METADATA -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <div class="footer-branding">
+                    <h3>THE PITCH</h3>
+                    <p style="font-size: 0.9rem; color: var(--moonlit-grey); opacity: 0.7;">Digital Craftsmanship Built For Universal Access.</p>
+                </div>
+            </div>
+            <div class="footer-meta">
+                &copy; 2026 DecodeLabs Internship Framework. Architected by Full-Stack Engineering Cohort.
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================================================
+       5. JAVASCRIPT LOGIC (State & Interactivity Framework)
+       ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Interaction 1: Highlight Nav States during interaction
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Interaction 2: Interactive Vote Counter State Tracker
+            const pollButtons = document.querySelectorAll('.poll-option');
+            let hasVoted = false;
+
+            pollButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if(hasVoted) {
+                        alert("Your data metric has already been registered inside this current session loop.");
+                        return;
+                    }
+                    
+                    const optionId = this.getAttribute('data-option');
+                    const countElement = document.getElementById(`count-${optionId}`);
+                    
+                    // Increment state value safely natively
+                    let currentCount = parseInt(countElement.innerText, 10);
+                    countElement.innerText = currentCount + 1;
+                    
+                    // Style Feedback
+                    this.style.backgroundColor = 'var(--mocha-mousse)';
+                    this.style.color = '#FFFFFF';
+                    hasVoted = true;
+                });
+            });
+
+            // Interaction 3: Hero Action Navigation Scroller
+            const exploreBtn = document.getElementById('exploreBtn');
+            exploreBtn.addEventListener('click', () => {
+                document.getElementById('news').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
